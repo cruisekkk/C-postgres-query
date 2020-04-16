@@ -1,8 +1,11 @@
 #include <iostream>
 #include <pqxx/pqxx>
 
+#include "query_funcs.cpp"
 #include "exerciser.h"
 #include "tableLoader.cpp"
+#include "fileReader.cpp"
+
 using namespace std;
 using namespace pqxx;
 
@@ -37,14 +40,35 @@ int main (int argc, char *argv[])
   tableLoader* loader = new tableLoader();
   
   char* drop = (char *) "DROP TABLE IF EXISTS PLAYER, TEAM, STATE, COLOR;";
-  Trans->exec(drop);
-  Trans->exec(loader->getPlayerTable());
-  Trans->exec(loader->getTeamTable());
-  Trans->exec(loader->getStateTable());
-  Trans->exec(loader->getColorTable());
-  
-  Trans->commit();
 
+  try{
+    Trans->exec(drop);
+    Trans->exec(loader->getPlayerTable());
+    Trans->exec(loader->getTeamTable());
+    Trans->exec(loader->getStateTable());
+    Trans->exec(loader->getColorTable());
+    
+    Trans->commit();
+  }
+  catch (exception const &e)
+    {
+      cerr << e.what() << '\n';
+      return EXIT_FAILURE;
+    }
+
+  fileReader* reader;
+  
+  for (const char* txtFile : {"player.txt", "team.txt", "state.txt", "color.txt"}){
+    reader = new fileReader(txtFile);
+    try{
+      reader->writedb(Trans);
+    }
+    catch (exception const &e)
+    {
+      cerr << e.what() << '\n';
+      return EXIT_FAILURE;
+    }    
+  }
   
   exercise(C);
 
@@ -52,7 +76,7 @@ int main (int argc, char *argv[])
   //Close database connection
   C->disconnect();
 
-  return 0;
+  return EXIT_SUCCESS;
 }
 
 
