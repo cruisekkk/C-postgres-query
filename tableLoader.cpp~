@@ -1,0 +1,14 @@
+class tableLoader{
+private:
+  char* player;
+  char* team;
+  char* state;
+  char* color;
+  tableLoader(){
+
+
+
+  }
+
+
+};
