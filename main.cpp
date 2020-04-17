@@ -30,14 +30,19 @@ int main (int argc, char *argv[])
     return 1;
   }
 
-  // a database transaction
-  // 
+  // a database transaction to handle activities until committed
+  // should follow atomic property
   work* Trans = new work(*C);
+  // initialize my helper class which stores the table init commands
   tableLoader* loader = new tableLoader();
-  
+
+  // because database is persistent, we need to clean it at first
   char* drop = (char *) "DROP TABLE IF EXISTS PLAYER, TEAM, STATE, COLOR;";
 
+  // try-catch style
+  // handle the database activity safely
   try{
+    // execute the initialization command
     Trans->exec(drop);
     Trans->exec(loader->getPlayerTable());
     Trans->exec(loader->getTeamTable());
@@ -53,7 +58,8 @@ int main (int argc, char *argv[])
     }
 
   fileReader* reader;
-  
+
+  // load txt files' data into the database
   for (string txtFile : {"player", "team", "state", "color"}){
     reader = new fileReader(txtFile+".txt");
     try{
@@ -66,8 +72,8 @@ int main (int argc, char *argv[])
     }    
   }
   
+  // step into the exercise class to test the correctness of queries
   exercise(C);
-
 
   //Close database connection
   C->disconnect();

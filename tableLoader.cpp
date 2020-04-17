@@ -1,14 +1,19 @@
+
+// This class help main function provide the initialization command in sql
+// by using 'create'
 class tableLoader{
 private:
+  // protect the command, just for external invoking
   char* player;
   char* team;
   char* state;
   char* color;
 public:
+  
   tableLoader(){
     player = (char *) "CREATE TABLE PLAYER(" 
-      "PLAYER_ID 	SERIAL	PRIMARY KEY," 
-      "TEAM_ID	INT	NOT NULL," //REFERENCES TEAM(TEAM_ID) ," 
+      "PLAYER_ID 	SERIAL	PRIMARY KEY," // primary key is both of unique and not null
+      "TEAM_ID	INT	NOT NULL,"
       "UNIFORM_NUM	INT NOT NULL," 
       "FIRST_NAME	TEXT	NOT NULL," 
       "LAST_NAME	TEXT	NOT NULL," 
@@ -22,8 +27,8 @@ public:
     team = (char *) "CREATE TABLE TEAM(" 
       "TEAM_ID	SERIAL PRIMARY KEY," 
       "NAME     TEXT	NOT NULL," 
-      "STATE_ID	INT	NOT NULL ," //REFERENCES STATE (STATE_ID)," 
-      "COLOR_ID	INT	NOT NULL ," //REFERENCES COLOR (COLOR_ID),"
+      "STATE_ID	INT	NOT NULL ," 
+      "COLOR_ID	INT	NOT NULL ," 
       "WINS	INT	NOT NULL,"
       "LOSSES	INT	NOT NULL);";
     
@@ -51,7 +56,4 @@ public:
   char* getColorTable(){
     return color;
   }
-
-
-  
 };
