@@ -30,10 +30,6 @@ int main (int argc, char *argv[])
     return 1;
   }
 
-
-  //TODO: create PLAYER, TEAM, STATE, and COLOR tables in the ACC_BBALL database
-  //      load each table with rows from the provided source txt files
-
   // a database transaction
   // 
   work* Trans = new work(*C);
@@ -58,10 +54,10 @@ int main (int argc, char *argv[])
 
   fileReader* reader;
   
-  for (const char* txtFile : {"player.txt", "team.txt", "state.txt", "color.txt"}){
-    reader = new fileReader(txtFile);
+  for (string txtFile : {"player", "team", "state", "color"}){
+    reader = new fileReader(txtFile+".txt");
     try{
-      reader->writedb(Trans);
+      reader->writedb(C);
     }
     catch (exception const &e)
     {
