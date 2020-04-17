@@ -55,7 +55,7 @@ void add_color(connection *C, string name)
 {
   string s = "";
   work* Trans = new work(*C);
-  s += "INSERT INTO state VALUES( DEFAULT, '";
+  s += "INSERT INTO color VALUES( DEFAULT, '";
   s += to_string(name) + "');";
 
   Trans->exec(s);
