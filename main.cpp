@@ -1,7 +1,7 @@
 #include <iostream>
 #include <pqxx/pqxx>
 
-#include "query_funcs.cpp"
+//#include "query_funcs.cpp"
 #include "exerciser.h"
 #include "tableLoader.cpp"
 #include "fileReader.cpp"
